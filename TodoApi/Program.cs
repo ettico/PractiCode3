@@ -18,8 +18,8 @@ builder.Services.AddCors(options =>
 
 // הוספת DbContext
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"), 
-    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ToDoDB"))));
+    options.UseMySql(builder.Configuration.GetConnectionString("bck85hsbsf8nmuudd3fq"), 
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("bck85hsbsf8nmuudd3fq"))));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
