@@ -28,11 +28,11 @@ var app = builder.Build();
 
 app.UseCors("AllowAll");
 
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 // הגדרת ה-routes
 app.MapGet("/items", async (ToDoDbContext db) =>
@@ -68,7 +68,7 @@ app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
-
+app.MapGet("/",()=>"TodoApi-server is running");
 app.Run();
 
 
