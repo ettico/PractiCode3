@@ -18,8 +18,8 @@ builder.Services.AddCors(options =>
 
 // הוספת DbContext
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("bck85hsbsf8nmuudd3fq"), 
-    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("bck85hsbsf8nmuudd3fq"))));
+    options.UseMySql(builder.Configuration.GetConnectionString("ToDoDB"), 
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ToDoDB"))));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -28,11 +28,11 @@ var app = builder.Build();
 
 app.UseCors("AllowAll");
 
-//if (app.Environment.IsDevelopment())
-//{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
+// }
 
 // הגדרת ה-routes
 app.MapGet("/items", async (ToDoDbContext db) =>
@@ -68,7 +68,7 @@ app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
     await db.SaveChangesAsync();
     return Results.NoContent();
 });
-//app.MapGet("/",()=>"TodoApi-server is running");
+app.MapGet("/",()=>"TodoApi-server is running");
 app.Run();
 
 
