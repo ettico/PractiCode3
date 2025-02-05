@@ -1,69 +1,65 @@
 import axios from 'axios';
+import config from './config';
 
-const apiUrl =process.env.REACT_APP_API_URL;
-//"http://localhost:5018";
-axios.defaults.baseURL = apiUrl;
+console.log(config.apiUrl);
 
-// הוספת interceptor לטיפול בשגיאות
+
 axios.interceptors.response.use(
-  response => response,
+  response => {
+    return response;
+  },
   error => {
-    console.error('API Error:', error); // רישום השגיאה בלוג
-    return Promise.reject(error);
+    console.error('API Error:', error); 
+    return Promise.reject(error); 
   }
 );
 
 export default {
   getTasks: async () => {
-    const result = await axios.get(`${apiUrl}/items`)    
-    return result.data;
+    try {
+      const result = await axios.get(`${config.apiUrl}/items`);
+      return result.data;
+    } catch (err) {
+      console.error(err);
+    }
   },
+//  getTasks:async()=> {
+//   try {
+//     const todos = await service.getTasks();
+//     setTodos(todos || []); // אם todos undefined, הגדר מערך ריק
+//   } catch (error) {
+//     console.error("Failed to fetch todos:", error);
+//     setTodos([]); // הגדר מערך ריק במקרה של שגיאה
+//   }
+// },
 
-  addTask: async(name) => {
+  addTask: async (name) => {
     console.log('addTask', name);
     try {
-      const result = await axios.post(`/items`, { name, isComplete: false });
-      console.log(result.data.name);
-      return result.data;
-      
-    } catch (error) {
-      console.error('Error adding task:', error);
-      throw error;
+      const result = await axios.post(`${config.apiUrl}/items`, { name: name, isComplete: false });
+      return result.data; 
+    } catch (err) {
+      console.error("Error", err);
     }
   },
 
-  setCompleted: async (id, name, isComplete) => {
-    console.log('setCompleted', { id, name, isComplete });
-    const updatedTask = { name, isComplete };
-    await axios.put(`/items/${id}`, updatedTask);
-    return { id, isComplete };
+  setCompleted: async (id, isComplete) => {
+    console.log('setCompleted', { id, isComplete });
+    try {
+      const result = await axios.put(`${config.apiUrl}/items/${id}`, { isComplete: isComplete });
+      return result.data;
+    } catch (err) {
+      console.error("Error", err);
+    }
   },
-
-
-
-  // setCompleted: async (id,name ,isComplete) => {
-  //   console.log('setCompleted', { id, isComplete,name });
-  //   debugger;
-    
-  //   try {
-      
-  //     const result = await axios.put(`/items/${id}`, { isComplete });
-  //     console.log(result.name);
-      
-  //     return result.data;
-  //   } catch (error) {
-  //     console.error('Error updating task:', error);
-  //     throw error;
-  //   }
-  // },
 
   deleteTask: async (id) => {
     console.log('deleteTask');
     try {
-      await axios.delete(`/items/${id}`);
-    } catch (error) {
-      console.error('Error deleting task:', error);
-      throw error;
+      const result = await axios.delete(`${config.apiUrl}/items/${id}`);
+      return result.data;
+    } catch (err) {
+      console.error("Error", err);
     }
   }
 };

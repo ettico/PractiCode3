@@ -19,7 +19,7 @@ function App() {
 
 
   async function updateCompleted(todo, isComplete) {
-    await service.setCompleted(todo.id,todo.name, isComplete);
+    await service.setCompleted(todo.id, isComplete);
     await getTodos();//refresh tasks list (in order to see the updated one)
   }
 
@@ -42,7 +42,9 @@ function App() {
       </header>
       <section className="main" style={{ display: "block" }}>
         <ul className="todo-list">
+
         {todos.map(todo => {
+        console.log("Value of n:", todo);
             return (
               <li className={todo.isComplete ? "completed" : ""} key={todo.id}>
                 <div className="view">
