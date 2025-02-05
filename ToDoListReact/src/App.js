@@ -44,7 +44,6 @@ function App() {
         <ul className="todo-list">
 
         {todos.map(todo => {
-        console.log("Value of n:", todo);
             return (
               <li className={todo.isComplete ? "completed" : ""} key={todo.id}>
                 <div className="view">
