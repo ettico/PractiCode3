@@ -5,10 +5,20 @@ function App() {
   const [newTodo, setNewTodo] = useState("");
   const [todos, setTodos] = useState([]);
 
+  // async function getTodos() {
+  //   const todos = await service.getTasks();
+  //   setTodos(todos);
+  // }
   async function getTodos() {
-    const todos = await service.getTasks();
-    setTodos(todos);
-  }
+    try {
+        const todos = await service.getTasks();
+        console.log('Fetched todos:', todos); // הוספת לוג לבדוק את הערך
+        setTodos(Array.isArray(todos) ? todos : []); // אם todos אינו מערך, הגדר מערך ריק
+    } catch (error) {
+        console.error("Failed to fetch todos:", error);
+        setTodos([]); // הגדר מערך ריק במקרה של שגיאה
+    }
+}
 
   async function createTodo(e) {
     e.preventDefault();
