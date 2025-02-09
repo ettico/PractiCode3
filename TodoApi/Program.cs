@@ -47,15 +47,34 @@ app.MapPost("/items", async (ToDoDbContext db, Item item) =>
     return Results.Created($"/items/{item.Id}", item);
 });
 
-app.MapPut("/items/{id}", async (int id, ToDoDbContext db, Item updatedItem) =>
-{
-    var item = await db.Items.FindAsync(id);
-    if (item is null) return Results.NotFound();
+// app.MapPut("/items/{id}", async (int id, ToDoDbContext db, Item updatedItem) =>
+// {
+//     var item = await db.Items.FindAsync(id);
+//     if (item is null) return Results.NotFound();
 
-    item.Name = updatedItem.Name; // עדכון משימה
-    item.IsComplete = updatedItem.IsComplete;
+//     item.Name = updatedItem.Name; // עדכון משימה
+//     item.IsComplete = updatedItem.IsComplete;
     
-    await db.SaveChangesAsync();
+//     await db.SaveChangesAsync();
+//     return Results.NoContent();
+// });
+
+app.MapPut("/items/{id}", (int id, Item updatedItem, ToDoDbContext db) =>
+{
+    var item = db.Items.Find(id);
+    if (item is null) return Results.NotFound();
+   
+    // עדכון רק את הסטטוס אם הוא נשלח
+    if (updatedItem.IsComplete.HasValue)
+    {
+        item.IsComplete = updatedItem.IsComplete;
+    }
+    if (!string.IsNullOrEmpty(updatedItem.Name))
+    {
+        item.Name = updatedItem.Name;
+    }
+   
+    db.SaveChanges();
     return Results.NoContent();
 });
 
